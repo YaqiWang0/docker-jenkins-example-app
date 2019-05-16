@@ -15,7 +15,7 @@ node{
 	stage('Push Image'){
 		docker.withRegistry('https://registry.hub.docker.com','docker-hub-credentials'){
 			app.push('${env.BRANCH_NAME}-latest')
-			app.push('${env.BRANCH_NAME}-${ENV.BUILD_NUMBER}')
+			app.push('${env.BRANCH_NAME}-${env.BUILD_NUMBER}')
 		}
 	}
 }
