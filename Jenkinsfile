@@ -5,7 +5,7 @@ node{
 		checkout scm
 	}
 	stage('build image'){
-		app =docker.build('emmawang9506/example-app')
+		app =docker.build('quay.io/emmawang9506/example-app')
 	}
 	stage('Test'){
 		app.inside{
@@ -13,7 +13,7 @@ node{
 		}
 	}
 	stage('Push Image'){
-		docker.withRegistry('https://registry.hub.docker.com','docker-hub-credentials'){
+		docker.withRegistry('https://quay.io','quay-io-credentials'){
 			 app.push("${env.BRANCH_NAME}-latest")
                          app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
 		}
