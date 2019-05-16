@@ -1,5 +1,6 @@
 node{
-	def app
+	try{
+        def app
 	
 	stage('clone repository'){
 		checkout scm
@@ -17,5 +18,10 @@ node{
 			 app.push("${env.BRANCH_NAME}-latest")
                          app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
 		}
+	}
+	}catch(error){
+                withCredentials([[$class: 'StringBinding', credentialsId: 'slack-webhook-url', variable: 'SLACK_URL']]){
+		sh "curl -XPOST -d 'payload={ \"color\":\"danger\",\"text\":\"warning: Build failed: $error (see<${env.BUILD_URL}/console|the build logs>)\" }' ${env.SLACK_URL}"
+	}        
 	}
 }
